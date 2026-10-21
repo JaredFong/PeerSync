@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   Profile — PeerSync
+  </title>
+  <link href="/css/styles.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <header>
+   <a class="brand" href="/pages/dashboard.html">
+    PeerSync
+    <small>
+     CONNECT • SUPPORT • GROW
+    </small>
+   </a>
+   <nav>
+    <a href="/pages/dashboard.html">
+     Home
+    </a>
+    <a class="selected" href="/pages/profile.html">
+     Profile
+    </a>
+    <a href="/pages/requests.html">
+     Support
+    </a>
+    <a href="/pages/sessions.html">
+     Sessions
+    </a>
+    <a href="/pages/feedback.html">
+     Feedback
+    </a>
+   </nav>
+   <button class="secondary" id="signout">
+    Sign out
+   </button>
+  </header>
+  <main>
+   <span class="eyebrow">
+    USE CASE 1 · XINKIT
+   </span>
+   <h1>
+    Manage student profile
+   </h1>
+   <p class="muted">
+    Owns profile details, volunteer registration, skills, interests and availability.
+   </p>
+   <section class="panel">
+    <form id="profile-form">
+     <label>
+      About me
+      <textarea maxlength="600" name="bio" placeholder="A short introduction" rows="3"></textarea>
+     </label>
+     <label class="inline">
+      <input id="is-volunteer" name="is_volunteer" type="checkbox"/>
+      I want to become a volunteer
+     </label>
+     <div class="hidden" id="volunteer-fields">
+      <label>
+       Support categories
+      </label>
+      <div class="checks">
+       <label>
+        <input name="categories" type="checkbox" value="Academic"/>
+        Academic
+       </label>
+       <label>
+        <input name="categories" type="checkbox" value="Technology"/>
+        Technology
+       </label>
+       <label>
+        <input name="categories" type="checkbox" value="New Student"/>
+        New Student
+       </label>
+       <label>
+        <input name="categories" type="checkbox" value="General Student"/>
+        General Student
+       </label>
+      </div>
+      <label>
+       Skills
+       <small>
+        Comma-separated; add your own
+       </small>
+       <input name="skills" placeholder="Java, mathematics, Excel"/>
+      </label>
+      <label>
+       Availability
+       <small>
+        Comma-separated days/times
+       </small>
+       <input name="availability" placeholder="Monday evenings, Saturday morning"/>
+      </label>
+      <label>
+       Preferred support mode
+       <select name="support_mode">
+        <option>
+         Both
+        </option>
+        <option>
+         Virtual
+        </option>
+        <option>
+         Face-to-face
+        </option>
+       </select>
+      </label>
+     </div>
+     <div class="actions">
+      <button class="secondary" type="reset">
+       Reset
+      </button>
+      <button class="primary">
+       Save changes
+      </button>
+     </div>
+    </form>
+   </section>
+   <p id="page-message" role="status">
+   </p>
+  </main>
+  <script src="/js/shared.js">
+  </script>
+  <script src="/js/profile.js">
+  </script>
+ </body>
+</html>
+
