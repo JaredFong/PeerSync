@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   Requests &amp; matching — PeerSync
+  </title>
+  <link href="/css/styles.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <header>
+   <a class="brand" href="/pages/dashboard.html">
+    PeerSync
+    <small>
+     CONNECT • SUPPORT • GROW
+    </small>
+   </a>
+   <nav>
+    <a href="/pages/dashboard.html">
+     Home
+    </a>
+    <a href="/pages/profile.html">
+     Profile
+    </a>
+    <a class="selected" href="/pages/requests.html">
+     Support
+    </a>
+    <a href="/pages/sessions.html">
+     Sessions
+    </a>
+    <a href="/pages/feedback.html">
+     Feedback
+    </a>
+   </nav>
+   <button class="secondary" id="signout">
+    Sign out
+   </button>
+  </header>
+  <main>
+   <span class="eyebrow">
+    USE CASE 2 · JARED
+   </span>
+   <h1>
+    Support requests
+   </h1>
+   <p class="muted">
+    Find volunteers, create support requests, and accept or reject incoming requests.
+   </p>
+   <section class="panel">
+    <h2>
+     Find a volunteer
+    </h2>
+    <div class="filters">
+     <label>
+      Category
+      <select id="filter-category">
+       <option value="">
+        All categories
+       </option>
+       <option>
+        Academic
+       </option>
+       <option>
+        Technology
+       </option>
+       <option>
+        New Student
+       </option>
+       <option>
+        General Student
+       </option>
+      </select>
+     </label>
+     <label>
+      Support mode
+      <select id="filter-mode">
+       <option value="">
+        Any mode
+       </option>
+       <option>
+        Virtual
+       </option>
+       <option>
+        Face-to-face
+       </option>
+      </select>
+     </label>
+     <label>
+      Skill
+      <input id="filter-skill" placeholder="Search a skill"/>
+     </label>
+     <button class="primary" id="search-volunteers">
+      Search
+     </button>
+    </div>
+    <div class="cards" id="volunteer-list">
+    </div>
+   </section>
+   <section class="panel">
+    <h2>
+     Create support request
+    </h2>
+    <form id="request-form">
+     <div class="two">
+      <label>
+       Category
+       <select name="category" required="">
+        <option value="">
+         Choose
+        </option>
+        <option>
+         Academic
+        </option>
+        <option>
+         Technology
+        </option>
+        <option>
+         New Student
+        </option>
+        <option>
+         General Student
+        </option>
+       </select>
+      </label>
+      <label>
+       Volunteer
+       <select id="volunteer-select" name="volunteer_id" required="">
+        <option value="">
+         Search and select above
+        </option>
+       </select>
+      </label>
+     </div>
+     <label>
+      Request title
+      <input maxlength="140" name="title" required=""/>
+     </label>
+     <label>
+      Details
+      <textarea name="description" required="" rows="3"></textarea>
+     </label>
+     <div class="two">
+      <label>
+       Preferred date
+       <input id="preferred-date" name="preferred_date" type="date"/>
+      </label>
+      <label>
+       Preferred time
+       <input name="preferred_time" type="time"/>
+      </label>
+     </div>
+     <label>
+      Support mode
+      <select name="support_mode">
+       <option>
+        Virtual
+       </option>
+       <option>
+        Face-to-face
+       </option>
+      </select>
+     </label>
+     <button class="primary">
+      Send request
+     </button>
+    </form>
+   </section>
+   <section class="panel">
+    <h2>
+     My requests &amp; incoming requests
+    </h2>
+    <div class="cards" id="request-list">
+    </div>
+   </section>
+   <p id="page-message" role="status">
+   </p>
+  </main>
+  <script src="/js/shared.js">
+  </script>
+  <script src="/js/requests.js">
+  </script>
+ </body>
+</html>
