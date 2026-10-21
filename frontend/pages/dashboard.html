@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   Dashboard — PeerSync
+  </title>
+  <link href="/css/styles.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <header>
+   <a class="brand" href="/pages/dashboard.html">
+    PeerSync
+    <small>
+     CONNECT • SUPPORT • GROW
+    </small>
+   </a>
+   <nav>
+    <a href="/pages/dashboard.html">
+     Home
+    </a>
+    <a href="/pages/profile.html">
+     Profile
+    </a>
+    <a href="/pages/requests.html">
+     Support
+    </a>
+    <a href="/pages/sessions.html">
+     Sessions
+    </a>
+    <a href="/pages/feedback.html">
+     Feedback
+    </a>
+   </nav>
+   <button class="secondary" id="signout">
+    Sign out
+   </button>
+  </header>
+  <main>
+   <span class="eyebrow">
+    YOUR STUDENT COMMUNITY
+   </span>
+   <h1>
+    Your dashboard
+   </h1>
+   <p class="muted">
+    A quick overview of your support journey.
+   </p>
+   <section class="stats">
+    <article class="panel">
+     <span>
+      My requests
+     </span>
+     <strong id="request-count">
+      —
+     </strong>
+    </article>
+    <article class="panel">
+     <span>
+      Accepted requests
+     </span>
+     <strong id="accepted-count">
+      —
+     </strong>
+    </article>
+    <article class="panel">
+     <span>
+      Volunteer status
+     </span>
+     <strong id="volunteer-status">
+      —
+     </strong>
+    </article>
+   </section>
+   <section class="panel">
+    <h2>
+     Quick links
+    </h2>
+    <div class="quick">
+     <a class="tile" href="/pages/profile.html">
+      <strong>
+       Manage profile
+      </strong>
+      <span>
+       Skills, availability and volunteer status
+      </span>
+     </a>
+     <a class="tile" href="/pages/requests.html">
+      <strong>
+       Find support
+      </strong>
+      <span>
+       Create a request or respond to one
+      </span>
+     </a>
+     <a class="tile" href="/pages/feedback.html">
+      <strong>
+       Give feedback
+      </strong>
+      <span>
+       Rate support after a request is completed
+      </span>
+     </a>
+    </div>
+   </section>
+   <p id="page-message" role="status">
+   </p>
+  </main>
+  <script src="/js/shared.js">
+  </script>
+  <script src="/js/dashboard.js">
+  </script>
+ </body>
+</html>

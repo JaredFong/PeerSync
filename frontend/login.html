@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   PeerSync
+  </title>
+  <link href="/css/styles.css" rel="stylesheet"/>
+ </head>
+ <body class="auth-page login-page">
+  <header>
+   <a class="brand" href="/index.html">
+    <span>
+     PeerSync
+     <small>
+      CONNECT • SUPPORT • GROW
+     </small>
+    </span>
+   </a>
+   <a class="auth-link" href="/index.html">
+    New to PeerSync?
+    <b style="color:var(--ink);border:1px solid var(--line);padding:10px 16px;border-radius:8px;margin-left:8px;display:inline-block">
+     Create Account
+    </b>
+   </a>
+  </header>
+  <main class="auth">
+   <section>
+    <span class="eyebrow">
+     HELP UNIVERSITY · STUDENT COMMUNITY
+    </span>
+    <h1>
+     Support each other.
+     <br/>
+     <em>
+      Move forward together.
+     </em>
+    </h1>
+    <p>
+     Find peer support, share what you know, and make university life easier — one connection at a time.
+    </p>
+   </section>
+   <section class="panel">
+    <div class="brand" style="justify-content:center;margin-bottom:20px">
+     <span>
+      PeerSync
+      <small>
+       CONNECT • SUPPORT • GROW
+      </small>
+     </span>
+    </div>
+    <form id="login-form">
+     <h2>
+      Welcome back
+     </h2>
+     <label>
+      Email
+      <input name="email" placeholder="you@help.edu.my" required="" type="email"/>
+     </label>
+     <label>
+      Password
+      <input minlength="8" name="password" required="" type="password"/>
+     </label>
+     <button class="primary">
+      Continue
+     </button>
+    </form>
+    <form class="hidden" id="login-otp">
+     <h2>
+      Verify sign in
+     </h2>
+     <p class="muted">
+      Enter the 6-digit code shown in the development message.
+     </p>
+     <label>
+      Verification code
+      <input inputmode="numeric" name="code" pattern="[0-9]{6}" required=""/>
+     </label>
+     <button class="primary">
+      Verify
+     </button>
+    </form>
+    <form class="hidden" id="register-form">
+     <h2>
+      Create Account
+     </h2>
+     <label>
+      Full Name
+      <input name="full_name" placeholder="e.g. Jared Fong" required=""/>
+     </label>
+     <label>
+      Student ID
+      <input name="student_id" required=""/>
+     </label>
+     <label>
+      Student Email
+      <input name="email" placeholder="username@help.edu.my" required="" type="email"/>
+     </label>
+     <label>
+      Password
+      <input minlength="8" name="password" placeholder="At least 8 characters" required="" type="password"/>
+     </label>
+     <label class="inline">
+      <input name="volunteer" type="checkbox"/>
+      I am interested to register as a volunteer
+     </label>
+     <label class="inline">
+      <input name="terms" required="" type="checkbox"/>
+      I agree to the Terms and Conditions
+     </label>
+     <button class="primary">
+      Sign Up
+     </button>
+    </form>
+    <form class="hidden" id="register-otp">
+     <h2>
+      Verify your email
+     </h2>
+     <label>
+      Verification code
+      <input inputmode="numeric" name="code" pattern="[0-9]{6}" required=""/>
+     </label>
+     <button class="primary">
+      Verify account
+     </button>
+    </form>
+    <p id="auth-message" role="status">
+    </p>
+   </section>
+  </main>
+  <script src="/js/shared.js">
+  </script>
+  <script src="/js/auth.js">
+  </script>
+ </body>
+</html>
