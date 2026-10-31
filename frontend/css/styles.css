@@ -11,9 +11,11 @@
   --green-ink:#17664a
 }
 *
+
 {
   box-sizing:border-box
 }
+
 body
 {
   margin:0;
@@ -21,10 +23,12 @@ body
   color:var(--ink);
   font:14px/1.5 Inter,Arial,sans-serif
 }
+
 h1,h2,h3
 {
   letter-spacing:-.035em
 }
+
 h1
 {
   font-size:26px;
