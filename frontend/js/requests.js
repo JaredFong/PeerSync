@@ -1,4 +1,5 @@
 let currentEditRequestId = null;
+let currentReassignId = null;
 const $ = s => document.querySelector(s);
 let volunteers = [], requests = [];
 
@@ -7,6 +8,7 @@ async function loadVolunteers() {
     if($('#filter-category').value) q.set('category', $('#filter-category').value);
     if($('#filter-mode').value) q.set('mode', $('#filter-mode').value);
     if($('#filter-skill').value.trim()) q.set('skill', $('#filter-skill').value.trim());
+    if($('#filter-day').value) q.set('day', $('#filter-day').value);
     try {
         const d = await PeerSync.api('/api/requests/volunteers?'+q);
         volunteers = d.volunteers;
@@ -26,14 +28,14 @@ async function loadRequests() {
         const d = await PeerSync.api('/api/requests');
         requests = d.requests;
         
-        $('#request-list').innerHTML = requests.length ? requests.map(r => `<article class="card"><div class="body"><strong>${PeerSync.safe(r.title)}</strong><p>${PeerSync.safe(r.category)} · ${PeerSync.safe(r.student_name)} → ${PeerSync.safe(r.volunteer_name||'Unassigned')}</p><p>${PeerSync.safe(r.description)}</p></div>${PeerSync.status(r.status)} <button class="secondary edit-btn" data-id="${r.request_id}">Edit</button> ${Number(r.volunteer_id)===window.currentUserId&&r.status==='Pending'?`<button class="primary respond" data-id="${r.request_id}" data-status="Accepted">Accept</button><button class="secondary respond" data-id="${r.request_id}" data-status="Rejected">Reject</button>`:''}${Number(r.volunteer_id)===window.currentUserId&&r.status==='Accepted'?`<button class="primary complete" data-id="${r.request_id}">Mark completed</button>`:''}</article>`).join('') : '<div class="empty">No requests yet.</div>';
+        $('#request-list').innerHTML = requests.length ? requests.map(r => `<article class="card"><div class="body"><strong>${PeerSync.safe(r.title)}</strong><p>${PeerSync.safe(r.category)} · ${PeerSync.safe(r.student_name)} → ${PeerSync.safe(r.volunteer_name||'Unassigned')}</p><p>${PeerSync.safe(r.description)}</p></div>${PeerSync.status(r.status)} ${Number(r.student_id)===window.currentUserId&&r.status==='Pending'?`<button class="secondary reassign-btn" data-id="${r.request_id}">Change volunteer (after 24h)</button><button class="secondary edit-btn" data-id="${r.request_id}">Edit</button><button class="secondary cancel-request" data-id="${r.request_id}">Cancel request</button>`:''} ${Number(r.volunteer_id)===window.currentUserId&&r.status==='Pending'?`<button class="primary respond" data-id="${r.request_id}" data-status="Accepted">Accept</button><button class="secondary respond" data-id="${r.request_id}" data-status="Rejected">Reject</button>`:''}${Number(r.volunteer_id)===window.currentUserId&&r.status==='Accepted'?`<button class="primary complete" data-id="${r.request_id}">Mark completed</button>`:''}</article>`).join('') : '<div class="empty">No requests yet.</div>';
         
         document.querySelectorAll('.respond').forEach(b => b.onclick = async() => {
             try {
                 await PeerSync.api(`/api/requests/${b.dataset.id}/respond`, {
                     method:'PATCH', body:JSON.stringify({ status:b.dataset.status })
                 });
-                await loadRequests();
+                await Promise.all([loadRequests(),loadNotifications()]);
                 PeerSync.msg('Request updated.');
             } catch(e) {
                 PeerSync.msg(e.message, true);
@@ -52,6 +54,22 @@ async function loadRequests() {
             }
         });
 
+        document.querySelectorAll('.cancel-request').forEach(b => b.onclick = async () => {
+            if (!confirm('Cancel this pending support request?')) return;
+            try {
+                await PeerSync.api(`/api/requests/${b.dataset.id}/cancel`, {method:'PATCH',body:'{}'});
+                PeerSync.msg('Request cancelled.');
+                await loadRequests();
+            } catch(e) { PeerSync.msg(e.message,true); }
+        });
+        document.querySelectorAll('.reassign-btn').forEach(b => b.onclick = () => {
+            currentReassignId=b.dataset.id;
+            const selected=requests.find(r=>String(r.request_id)===String(currentReassignId));
+            const options=volunteers.filter(v=>v.user_id!==Number(selected.volunteer_id)&&v.categories.includes(selected.category)&&(v.support_mode==='Both'||v.support_mode===selected.support_mode));
+            $('#reassign-volunteer').innerHTML='<option value="">Choose a different volunteer</option>'+options.map(v=>`<option value="${v.user_id}">${PeerSync.safe(v.full_name)}</option>`).join('');
+            $('.reassign-container').classList.remove('hidden');
+            $('.reassign-container').scrollIntoView({behavior:'smooth'});
+        });
         document.querySelectorAll('.edit-btn').forEach(b => b.onclick = () => {
             currentEditRequestId = b.dataset.id;
             const reqToEdit = requests.find(x => String(x.request_id) === String(b.dataset.id));
@@ -59,6 +77,9 @@ async function loadRequests() {
                 $('#request-title').value = reqToEdit.title || '';
                 $('#request-desc').value = reqToEdit.description || '';
                 if($('#request-type')) $('#request-type').value = reqToEdit.category || 'Academic';
+                $('#edit-support-mode').value=reqToEdit.support_mode||'Virtual';
+                $('#edit-preferred-date').value=reqToEdit.preferred_date ? String(reqToEdit.preferred_date).slice(0,10) : '';
+                $('#edit-preferred-time').value=reqToEdit.preferred_time ? String(reqToEdit.preferred_time).slice(0,5) : '';
             }
             const editBox = $('.edit-request-container');
             if (editBox) {
@@ -72,6 +93,23 @@ async function loadRequests() {
     }
 }
 
+async function loadNotifications(){
+    try{
+        const data=await PeerSync.api('/api/requests/notifications');
+        $('#notification-list').innerHTML=data.notifications.length?data.notifications.map(n=>`<article class="card"><div class="body"><strong>${PeerSync.safe(n.title)}</strong><p>${PeerSync.safe(n.message)}</p></div>${n.is_read?'':`<button class="secondary read-notification" data-id="${n.notification_id}">Mark read</button>`}</article>`).join(''):'<div class="empty">No notifications yet.</div>';
+        document.querySelectorAll('.read-notification').forEach(b=>b.onclick=async()=>{try{await PeerSync.api(`/api/requests/notifications/${b.dataset.id}/read`,{method:'PATCH',body:'{}'});await loadNotifications();}catch(e){PeerSync.msg(e.message,true);}});
+    }catch(e){PeerSync.msg(e.message,true);}
+}
+$('#refresh-notifications').onclick=loadNotifications;
+$('#close-reassign').onclick=()=>$('.reassign-container').classList.add('hidden');
+$('#reassign-form').onsubmit=async e=>{
+    e.preventDefault();
+    try{
+        await PeerSync.api(`/api/requests/${currentReassignId}/reassign`,{method:'PATCH',body:JSON.stringify({volunteer_id:Number($('#reassign-volunteer').value)})});
+        $('.reassign-container').classList.add('hidden');
+        PeerSync.msg('Request reassigned.');await Promise.all([loadRequests(),loadNotifications()]);
+    }catch(e){PeerSync.msg(e.message,true);}
+};
 $('#search-volunteers').onclick = loadVolunteers;
 
 $('#request-form').onsubmit = async e => {
@@ -115,12 +153,13 @@ if (cancelBtn) {
 }
 
 $('#preferred-date').min = new Date().toISOString().slice(0,10);
+$('#edit-preferred-date').min = new Date().toISOString().slice(0,10);
 
 (async() => {
     try {
         const d = await PeerSync.api('/api/auth/me');
         window.currentUserId = d.user.user_id;
-        await Promise.all([loadVolunteers(), loadRequests()]);
+        await Promise.all([loadVolunteers(), loadRequests(), loadNotifications()]);
     } catch(e) {
         PeerSync.msg(e.message, true);
     }
