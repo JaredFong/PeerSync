@@ -74,6 +74,7 @@
       Skill
       <input id="filter-skill" placeholder="Search a skill"/>
      </label>
+     <label>Available day<select id="filter-day"><option value="">Any day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
      <button class="primary" id="search-volunteers">Search</button>
     </div>
     <div class="cards" id="volunteer-list">
@@ -129,59 +130,41 @@
     </form>
    </section>
    <section class="panel">
+    <h2>Notifications</h2>
+    <button type="button" class="secondary" id="refresh-notifications">Refresh notifications</button>
+    <div class="cards" id="notification-list"></div>
+   </section>
+   <section class="panel">
     <h2>My requests &amp; incoming requests</h2>
     <div class="cards" id="request-list">
     </div>
    </section>
 
-   <div class="edit-request-container hidden">
-    <h2>Edit Request</h2>
-    
+   <section class="panel reassign-container hidden">
+    <h2>Choose another volunteer</h2>
+    <p>If the volunteer has not responded within 24 hours, choose a different volunteer who matches your request.</p>
+    <form id="reassign-form">
+      <label>New volunteer<select id="reassign-volunteer" required></select></label>
+      <button type="button" class="secondary" id="close-reassign">Close</button>
+      <button type="submit" class="primary">Send to new volunteer</button>
+    </form>
+   </section>
+   <section class="panel edit-request-container hidden">
+    <h2>Edit pending support request</h2>
     <form id="edit-request-form">
-        <div class="form-group">
-        <label for="request-type">Request Type</label>
-        <select id="request-type" name="requestType">
-            <option value="academic" selected>Academic</option>
-            <option value="technical">Technical</option>
-            <option value="other">Other</option>
-        </select>
-        </div>
-
-        <div class="form-group">
-        <label for="request-title">Title</label>
-        <input type="text" id="request-title" name="title" value="Need help with Java assignment" placeholder="Enter title">
-        </div>
-
-        <div class="form-group">
-        <label for="request-desc">Description</label>
-        <textarea id="request-desc" name="description" rows="5" placeholder="Describe your request...">I am struggling with Object-Oriented Programming (OOP) concepts, specifically inheritance and polymorphism. I need someone to explain the theoretical concepts and review my assignment code before the submission next week.</textarea>
-        </div>
-
-        <div class="form-group">
-        <label>Preferred Support Mode</label>
-        <div class="radio-group">
-            <label>
-            <input type="radio" name="supportMode" value="online" checked>
-            Online
-            </label>
-            <label>
-            <input type="radio" name="supportMode" value="face-to-face">
-            Face-to-face
-            </label>
-        </div>
-    </div>
-
-    <div class="form-group">
-      <label for="preferred-time">Preferred Time (optional)</label>
-      <input type="date" id="preferred-time" name="preferredTime" value="2026-09-11">
-    </div>
-
-    <div class="form-actions">
-      <button type="button" class="btn-cancel">Cancel</button>
-      <button type="submit" class="btn-save">Save</button>
-    </div>
-  </form>
-</div>
+     <label>Category<select id="request-type" name="category" required>
+      <option>Academic</option><option>Technology</option><option>New Student</option><option>General Student</option>
+     </select></label>
+     <label>Title<input id="request-title" name="title" maxlength="140" required></label>
+     <label>Description<textarea id="request-desc" name="description" rows="4" required></textarea></label>
+     <div class="two">
+      <label>Preferred date<input id="edit-preferred-date" name="preferred_date" type="date"></label>
+      <label>Preferred time<input id="edit-preferred-time" name="preferred_time" type="time"></label>
+     </div>
+     <label>Support mode<select id="edit-support-mode" name="support_mode"><option>Virtual</option><option>Face-to-face</option></select></label>
+     <div class="form-actions"><button type="button" class="secondary btn-cancel">Close</button><button type="submit" class="primary">Save changes</button></div>
+    </form>
+   </section>
    <p id="page-message" role="status">
    </p>
   </main>
