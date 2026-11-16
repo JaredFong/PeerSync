@@ -1,193 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width,initial-scale=1" name="viewport"/>
-  <title>
-   Requests &amp; matching — PeerSync
-  </title>
-  <link href="../css/styles.css" rel="stylesheet"/>
- </head>
- <body>
-  <header>
-   <a class="brand" href="dashboard.html">
-    PeerSync
-    <small>
-     CONNECT • SUPPORT • GROW
-    </small>
-   </a>
-   <nav>
-    <a href="dashboard.html">
-     Home
-    </a>
-    <a href="profile.html">
-     Profile
-    </a>
-    <a class="selected" href="requests.html">
-     Support
-    </a>
-    <a href="sessions.html">
-     Sessions
-    </a>
-    <a href="feedback.html">
-     Feedback
-    </a>
-   </nav>
-   <button class="secondary" id="signout">
-    Sign out
-   </button>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support Requests — HELP Peer Sync</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/requests-wireframe.css">
+</head>
+<body class="uc2-page">
+  <header class="uc2-sidebar">
+    <a class="brand" href="dashboard.html"><span class="uc2-brandname">HELP Peer Sync<small>CONNECT • SUPPORT • GROW</small></span></a>
+    <nav aria-label="Main navigation">
+      <a href="dashboard.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a class="selected" href="requests.html">Support</a>
+      <a href="sessions.html">Sessions</a>
+      <a href="feedback.html">Feedback</a>
+    </nav>
+    <div class="uc2-user" id="sidebar-user"><span class="uc2-avatar">PS</span><span><strong>Student Account</strong><small>HELP Peer Sync</small></span></div>
+    <button class="secondary uc2-signout" id="signout">Sign out</button>
   </header>
-  <main>
-   <span class="eyebrow">
-    USE CASE 2 · JARED
-   </span>
-   <h1>
-    Support requests
-   </h1>
-   <p class="muted">
-    Find volunteers, create support requests, and accept or reject incoming requests.
-   </p>
-   <section class="panel">
-    <h2>
-     Find a volunteer
-    </h2>
-    <div class="filters">
-     <label>
-      Category
-      <select id="filter-category">
-       <option value="">All categories</option>
-       <option>Academic</option>
-       <option>Technology</option>
-       <option>New Student</option>
-       <option>General Student</option>
-      </select>
-     </label>
-     <label>
-      Support mode
-      <select id="filter-mode">
-       <option value="">Any mode</option>
-       <option>Virtual</option>
-       <option>Face-to-face</option>
-      </select>
-     </label>
-     <label>
-      Skill
-      <input id="filter-skill" placeholder="Search a skill"/>
-     </label>
-     <button class="primary" id="search-volunteers">Search</button>
-    </div>
-    <div class="cards" id="volunteer-list">
-    </div>
-   </section>
-   <section class="panel">
-    <h2>Create support request</h2>
-    <form id="request-form">
-     <div class="two">
-      <label>
-       Category
-       <select name="category" required="">
-        <option value="">Choose</option>
-        <option>Academic</option>
-        <option>Technology</option>
-        <option>New Student</option>
-        <option>General Student</option>
-       </select>
-      </label>
-      <label>
-       Volunteer
-       <select id="volunteer-select" name="volunteer_id" required="">
-        <option value="">Search and select above</option>
-       </select>
-      </label>
-     </div>
-     <label>
-      Request title
-      <input maxlength="140" name="title" required=""/>
-     </label>
-     <label>
-      Details
-      <textarea name="description" required="" rows="3"></textarea>
-     </label>
-     <div class="two">
-      <label>
-       Preferred date
-       <input id="preferred-date" name="preferred_date" type="date"/>
-      </label>
-      <label>
-       Preferred time
-       <input name="preferred_time" type="time"/>
-      </label>
-     </div>
-     <label>
-      Support mode
-      <select name="support_mode">
-       <option>Virtual</option>
-       <option>Face-to-face</option>
-      </select>
-     </label>
-     <button class="primary">Send request</button>
-    </form>
-   </section>
-   <section class="panel">
-    <h2>My requests &amp; incoming requests</h2>
-    <div class="cards" id="request-list">
-    </div>
-   </section>
+  <main class="uc2-content">
+    <div id="page-message" class="uc2-message" role="status" aria-live="polite"></div>
 
-   <div class="edit-request-container hidden">
-    <h2>Edit Request</h2>
-    
-    <form id="edit-request-form">
-        <div class="form-group">
-        <label for="request-type">Request Type</label>
-        <select id="request-type" name="requestType">
-            <option value="academic" selected>Academic</option>
-            <option value="technical">Technical</option>
-            <option value="other">Other</option>
-        </select>
-        </div>
+    <section id="view-list" class="uc2-view">
+      <div class="uc2-heading"><h1>My Support Requests</h1><button class="secondary" data-view="create">+ New Request</button></div>
+      <div class="uc2-tabs" id="request-tabs" role="tablist" aria-label="Request statuses"></div>
+      <div class="uc2-panel uc2-table-scroll"><table class="uc2-table"><thead><tr><th>#</th><th>Title</th><th>Type</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="owned-requests"></tbody></table></div>
+      <div class="uc2-secondary-actions"><button class="secondary" data-view="incoming">Incoming Volunteer Requests <span id="incoming-count"></span></button><button class="secondary" data-view="notifications">Notifications <span id="notification-count"></span></button></div>
+    </section>
 
-        <div class="form-group">
-        <label for="request-title">Title</label>
-        <input type="text" id="request-title" name="title" value="Need help with Java assignment" placeholder="Enter title">
-        </div>
+    <section id="view-create" class="uc2-view hidden">
+      <div class="uc2-heading"><h1 id="form-heading">Create a Support Request</h1></div>
+      <div class="uc2-panel uc2-form-panel"><form id="request-form">
+        <label>Request Type<select name="category" required><option value="">Select a type</option><option value="Academic">Academic Support</option><option value="Technology">Technology Support</option><option value="New Student">New Student Support</option><option value="General Student">General Student Support</option></select></label>
+        <label>Title<input name="title" maxlength="140" placeholder="e.g. Need help with Java assignment" required></label>
+        <label>Description<textarea name="description" rows="5" placeholder="Provide more details about your request..." required></textarea></label>
+        <fieldset class="uc2-fieldset"><legend>Preferred Support Mode</legend><label class="uc2-radio"><input type="radio" name="support_mode" value="Virtual" checked> Online</label><label class="uc2-radio"><input type="radio" name="support_mode" value="Face-to-face"> Face-to-face</label></fieldset>
+        <div class="uc2-two"><label>Preferred Date (Optional)<input id="preferred-date" type="date" name="preferred_date"></label><label>Preferred Time (Optional)<input name="preferred_time" type="time"></label></div>
+        <div class="uc2-actions"><button type="button" class="secondary" data-view="list">Cancel</button><button class="primary" id="request-next">Find Volunteers</button></div>
+      </form></div>
+    </section>
 
-        <div class="form-group">
-        <label for="request-desc">Description</label>
-        <textarea id="request-desc" name="description" rows="5" placeholder="Describe your request...">I am struggling with Object-Oriented Programming (OOP) concepts, specifically inheritance and polymorphism. I need someone to explain the theoretical concepts and review my assignment code before the submission next week.</textarea>
-        </div>
+    <section id="view-matches" class="uc2-view hidden">
+      <div class="uc2-heading"><div><h1>Suggested Volunteers</h1><p class="muted">Based on your request requirements, here are some suitable peer volunteers.</p></div><button class="secondary" data-view="create">Edit Request</button></div>
+      <div class="uc2-panel uc2-filter-panel">
+        <div class="uc2-filter-grid">
+          <label>Support Category<select id="filter-category"><option value="">All categories</option><option>Academic</option><option>Technology</option><option>New Student</option><option>General Student</option></select></label>
+          <label>Support Mode<select id="filter-mode"><option value="">Any mode</option><option value="Virtual">Online</option><option>Face-to-face</option></select></label>
+          <label>Skill<input id="filter-skill" placeholder="e.g. Java"></label>
+          <label>Available Day<select id="filter-day"><option value="">Any day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
+        </div><button class="secondary" id="search-volunteers">Apply Filters</button>
+      </div>
+      <div id="volunteer-list" class="uc2-volunteer-grid"></div>
+    </section>
 
-        <div class="form-group">
-        <label>Preferred Support Mode</label>
-        <div class="radio-group">
-            <label>
-            <input type="radio" name="supportMode" value="online" checked>
-            Online
-            </label>
-            <label>
-            <input type="radio" name="supportMode" value="face-to-face">
-            Face-to-face
-            </label>
-        </div>
-    </div>
+    <section id="view-volunteer" class="uc2-view hidden">
+      <button class="uc2-back" data-view="matches">← Back to Matches</button><div id="volunteer-detail" class="uc2-panel uc2-detail-card"></div>
+    </section>
 
-    <div class="form-group">
-      <label for="preferred-time">Preferred Time (optional)</label>
-      <input type="date" id="preferred-time" name="preferredTime" value="2026-09-11">
-    </div>
+    <section id="view-details" class="uc2-view hidden">
+      <button class="uc2-back" data-view="list">← Back to My Requests</button><div id="request-details" class="uc2-panel uc2-detail-card"></div>
+    </section>
 
-    <div class="form-actions">
-      <button type="button" class="btn-cancel">Cancel</button>
-      <button type="submit" class="btn-save">Save</button>
-    </div>
-  </form>
-</div>
-   <p id="page-message" role="status">
-   </p>
+    <section id="view-incoming" class="uc2-view hidden">
+      <div class="uc2-heading"><h1>Incoming Support Requests</h1><button class="secondary" data-view="list">My Requests</button></div>
+      <p class="muted">Review requests sent to you as a volunteer.</p><div id="incoming-list" class="uc2-incoming-list"></div>
+    </section>
+
+    <section id="view-incoming-detail" class="uc2-view hidden">
+      <button class="uc2-back" data-view="incoming">← Back to Incoming Requests</button><div id="incoming-detail" class="uc2-panel uc2-detail-card"></div>
+    </section>
+
+    <section id="view-notifications" class="uc2-view hidden">
+      <div class="uc2-heading"><h1>Notifications</h1><button class="secondary" id="refresh-notifications">Refresh</button></div>
+      <div id="notification-list" class="uc2-notification-list"></div>
+    </section>
+
+    <section id="view-reassign" class="uc2-view hidden">
+      <button class="uc2-back" data-view="details">← Back to Request Details</button>
+      <h1>Choose Another Volunteer</h1><p class="muted">If your request remains pending for 24 hours, you may send it to another matching volunteer.</p>
+      <div class="uc2-panel uc2-form-panel"><form id="reassign-form"><label>Available Volunteers<select id="reassign-volunteer" required><option value="">Choose a volunteer</option></select></label><button class="primary">Send to New Volunteer</button></form></div>
+    </section>
   </main>
-  <script src="../js/shared.js">
-  </script>
-  <script src="../js/requests.js">
-  </script>
- </body>
+  <script src="../js/shared.js"></script>
+  <script src="../js/requests.js"></script>
+</body>
 </html>
