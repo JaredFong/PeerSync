@@ -1,10 +1,18 @@
-const fs = require('fs');
-const ts = require('/opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript/lib/typescript.js');
-const f = process.argv[1];
-const s = fs.readFileSync(f, 'utf8');
-const sf = ts.createSourceFile(f, s, ts.ScriptTarget.Latest, true, ts.ScriptKind.JS);
-if (sf.parseDiagnostics.length) {
-    console.error(sf.parseDiagnostics.map(d => d.messageText).join('\n'));
-    process.exit(2);
+const pool = require('../db');
+async function auth(req, res, next)  {
+    try  {
+        if (!req.session.userId) return res.status(401).json( {
+            error: 'Please sign in to continue.'
+        });
+        const [rows] = await pool.query('SELECT user_id, student_id, full_name, email FROM Users WHERE user_id=? AND is_verified=1', [req.session.userId]);
+        if (!rows.length) return res.status(401).json( {
+            error: 'Please sign in to continue.'
+        });
+        req.user = rows[0];
+        next();
+    }
+    catch (e)  {
+        next(e);
+    }
 }
-process.stdout.write(ts.createPrinter({ newLine: ts.NewLineKind.LineFeed, removeComments: false }).printFile(sf));
+module.exports = auth;

@@ -1,10 +1,1 @@
-const fs = require('fs');
-const ts = require('/opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript/lib/typescript.js');
-const f = process.argv[1];
-const s = fs.readFileSync(f, 'utf8');
-const sf = ts.createSourceFile(f, s, ts.ScriptTarget.Latest, true, ts.ScriptKind.JS);
-if (sf.parseDiagnostics.length) {
-    console.error(sf.parseDiagnostics.map(d => d.messageText).join('\n'));
-    process.exit(2);
-}
-process.stdout.write(ts.createPrinter({ newLine: ts.NewLineKind.LineFeed, removeComments: false }).printFile(sf));
+window.PeerSync={api:async(url,options={})=>{const r=await fetch(url,{credentials:'same-origin',headers:{'Content-Type':'application/json',...(options.headers||{})},...options});let d={};try{d=await r.json()}catch{}if(!r.ok)throw new Error(d.error||'Request failed.');return d;},msg:(text,error=false)=>{const el=document.querySelector('#page-message');if(el){el.textContent=text||'';el.classList.toggle('error',error)}},safe:s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),initials:s=>String(s||'U').split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase(),status:s=>`<span class="status ${['Pending'].includes(s)?'pending':['Cancelled','Rejected'].includes(s)?s.toLowerCase():s==='Completed'?'completed':''}">${s}</span>`};document.querySelector('#signout')?.addEventListener('click',async()=>{try{await PeerSync.api('/api/auth/logout',{method:'POST',body:'{}'})}finally{location.href='/index.html'}});

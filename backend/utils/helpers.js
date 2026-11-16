@@ -1,10 +1,16 @@
-const fs = require('fs');
-const ts = require('/opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript/lib/typescript.js');
-const f = process.argv[1];
-const s = fs.readFileSync(f, 'utf8');
-const sf = ts.createSourceFile(f, s, ts.ScriptTarget.Latest, true, ts.ScriptKind.JS);
-if (sf.parseDiagnostics.length) {
-    console.error(sf.parseDiagnostics.map(d => d.messageText).join('\n'));
-    process.exit(2);
-}
-process.stdout.write(ts.createPrinter({ newLine: ts.NewLineKind.LineFeed, removeComments: false }).printFile(sf));
+const categories = ['Academic','Technology','New Student','General Student'];
+const modes = ['Virtual','Face-to-face','Both'];
+const clean = v => typeof v === 'string' ? v.trim() : '';
+const parseJson = (v, fallback=[]) =>  {
+    if (Array.isArray(v)) return v;
+    if (!v) return fallback;
+    try  {
+        return typeof v === 'string' ? JSON.parse(v) : v;
+    }
+    catch  {
+        return fallback;
+    }
+};
+module.exports =  {
+    categories, modes, clean, parseJson
+};
