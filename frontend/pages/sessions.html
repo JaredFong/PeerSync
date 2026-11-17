@@ -61,6 +61,61 @@
     <div class="cards" id="past-list">
     </div>
    </section>
+
+   <div class="edit-request-container hidden" id="reschedule-form-container">
+    <h2>Reschedule Request</h2>
+    
+    <form id="reschedule-form">
+        <div class="form-group">
+            <label for="reschedule-type">Request Type</label>
+            <select id="reschedule-type" name="requestType" disabled style="background-color: #f0f2f5; cursor: not-allowed; color: #7b818c;">
+                <option value="academic">Academic</option>
+                <option value="technical">Technical</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="reschedule-title">Title</label>
+            <input type="text" id="reschedule-title" name="title" disabled style="background-color: #f0f2f5; cursor: not-allowed; color: #7b818c;">
+        </div>
+
+        <div class="form-group">
+            <label for="reschedule-desc">Description</label>
+            <textarea id="reschedule-desc" name="description" rows="5" disabled style="background-color: #f0f2f5; cursor: not-allowed; color: #7b818c;"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Preferred Support Mode</label>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="supportMode" value="online" checked>
+                    Online
+                </label>
+                <label>
+                    <input type="radio" name="supportMode" value="face-to-face">
+                    Face-to-face
+                </label>
+            </div>
+        </div>
+
+        <div class="two">
+            <div class="form-group">
+                <label for="reschedule-date">Preferred date</label>
+                <input type="date" id="reschedule-date" name="preferredDate">
+            </div>
+            <div class="form-group">
+                <label for="reschedule-clock">Preferred time</label>
+                <input type="time" id="reschedule-clock" name="preferredClock">
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-cancel" id="close-reschedule-btn">Cancel</button>
+            <button type="submit" class="btn-save">Save</button>
+        </div>
+    </form>
+   </div>
+
    <p id="page-message" role="status">
    </p>
   </main>
